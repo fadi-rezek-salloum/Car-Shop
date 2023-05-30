@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'bill',
     'cars',
     'parts',
-    'rental',
     'helps',
 
     # 3rd Party Apps
