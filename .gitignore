@@ -49,3 +49,5 @@ tmp_email/
 .direnv
 .envrc
 .tool-versions
+
+uploads/
