@@ -6,42 +6,33 @@ import axios from "axios";
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const RentCar = () => {
-  const [rentCars, setRentCars] = useState([]);
+const BuyCar = () => {
+  const [sellingCars, setSellingCars] = useState([]);
 
-  let is_rented_now = (start_date_str, end_date_str) => {
-    let start_date = new Date(start_date_str);
-    let end_date = new Date(end_date_str);
-
-    let input_date = new Date();
-
-    return input_date >= start_date && input_date <= end_date;
-  }
-
-  let getRentCars = async () => {
+  let getSellingCars = async () => {
     let response = await axios.get(
-      "http://localhost:8000/api/cars/rental-cars-list/"
+      "http://localhost:8000/api/cars/sell-cars-list/"
     );
 
     if (response.status === 200) {
-      setRentCars(response.data);
+      setSellingCars(response.data);
     }
   };
 
   useEffect(() => {
-    getRentCars();
+    getSellingCars();
   }, []);
 
   return (
     <section className="mt-5 py-3">
       <div className="container">
-        <h2 className="text-center">Cars for Rent</h2>
+        <h2 className="text-center">Cars for Sale</h2>
         <div className="row mt-5 d-flex justify-content-center">
-        {rentCars.length !== 0 ? (
-            rentCars.map((car) => (
+          {sellingCars.length !== 0 ? (
+            sellingCars.map((car) => (
               <div className="col-3 mb-3" key={car.id}>
                 <div className="card shadow-lg rounded position-relative">
-                  {is_rented_now(car.rental_days[0], car.rental_days[1]) && (
+                  {car.is_sold && (
                     <div
                       className="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center"
                       style={{
@@ -49,11 +40,11 @@ const RentCar = () => {
                         zIndex: 1,
                       }}
                     >
-                      <span className="text-white fs-4">Rented until <br /> {car.rental_days[1]}</span>
+                      <span className="text-white fs-4">Sold</span>
                     </div>
                   )}
                   <span className="rental__card-price bg-primary text-white">
-                    {car.rental_price}$ / day
+                    {car.selling_price}$
                   </span>
                   <img
                     src={`${car.picture}`}
@@ -79,7 +70,7 @@ const RentCar = () => {
             ))
           ) : (
             <div className="col-12 text-center">
-              We don't have any car for renting yet!
+              We don't have any car for selling yet!
             </div>
           )}
         </div>
@@ -88,4 +79,4 @@ const RentCar = () => {
   );
 };
 
-export default RentCar;
+export default BuyCar;

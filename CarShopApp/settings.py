@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'cars',
     'parts',
     'helps',
+    'history',
 
     # 3rd Party Apps
     'rest_framework',

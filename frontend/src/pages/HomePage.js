@@ -37,7 +37,8 @@ const HomePage = (props) => {
 
   const scrollToElement = () => servicesRef.current.scrollIntoView();
 
-  const [cars, setCars] = useState([])
+  const [rentalCars, setRentalCars] = useState([])
+  const [sellingCars, setSellingCars] = useState([])
   const [parts, setParts] = useState([])
 
   const { cartItems, addToCart } = props.state;
@@ -54,17 +55,21 @@ const HomePage = (props) => {
     })
   }
 
-  let getCars = async () => {
-    let response = await axios.get("http://localhost:8000/api/cars/cars-list/");
+  let getRentalCars = async () => {
+    let response = await axios.get("http://localhost:8000/api/cars/rental-cars-list/");
 
     if (response.status === 200) {
-      setCars(response.data);
+      setRentalCars(response.data);
     }
   };
 
-  useEffect(() => {
-    getCars();
-  }, []);
+  let getSellingCars = async () => {
+    let response = await axios.get("http://localhost:8000/api/cars/sell-cars-list/");
+
+    if (response.status === 200) {
+      setSellingCars(response.data);
+    }
+  };
 
   let getParts = async () => {
     let response = await axios.get("http://localhost:8000/api/parts/parts-list/");
@@ -74,7 +79,18 @@ const HomePage = (props) => {
     }
   };
 
+  let is_rented_now = (start_date_str, end_date_str) => {
+    let start_date = new Date(start_date_str);
+    let end_date = new Date(end_date_str);
+
+    let input_date = new Date();
+
+    return input_date >= start_date && input_date <= end_date;
+  }
+
   useEffect(() => {
+    getRentalCars();
+    getSellingCars();
     getParts();
   }, []);
 
@@ -216,36 +232,114 @@ const HomePage = (props) => {
           </h2>
           <div className="row mt-5 d-flex justify-content-center">
 
-            {cars.length !== 0 ? (cars.map((car) => (
-              <div className="col-4 mb-3" key={car.id}>
-                <div className="card shadow-lg rounded">
+          {rentalCars.length !== 0 ? (
+            rentalCars.map((car) => (
+              <div className="col-3 mb-3" key={car.id}>
+                <div className="card shadow-lg rounded position-relative">
+                  {is_rented_now(car.rental_days[0], car.rental_days[1]) && (
+                    <div
+                      className="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center"
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.7)",
+                        zIndex: 1,
+                      }}
+                    >
+                      <span className="text-white fs-4">Rented until <br /> {car.rental_days[1]}</span>
+                    </div>
+                  )}
                   <span className="rental__card-price bg-primary text-white">
-                    {car.rental_price}$ / Day
+                    {car.rental_price}$ / day
                   </span>
-                  <img src={`http://localhost:8000${car.picture}`} alt={car.brand} className="card-img-top rental__card-img" />
+                  <img
+                    src={`${car.picture}`}
+                    alt={car.name}
+                    className="card-img-top rental__card-img"
+                  />
                   <div className="card-body">
-                    <h5 className="card-title text-center">
-                      {car.brand}
-                    </h5>
-                    <p className="card-text text-center">
-                      {car.status}
-                    </p>
+                    <h5 className="card-title text-center">{car.name}</h5>
+                    <p className="card-text text-center">{car.year}</p>
                   </div>
                   <div className="card-footer text-center">
-                    <Link to={`/car/details/${car.id}`} state={{car: car}} className='btn btn-primary'>
+                    <Link
+                      to={`/car/details/${car.id}`}
+                      state={{ car: car }}
+                      className="btn btn-primary"
+                    >
                       View Details
-                      <FontAwesomeIcon icon={faCaretRight} className='ms-2' />
+                      <FontAwesomeIcon icon={faCaretRight} className="ms-2" />
                     </Link>
                   </div>
                 </div>
               </div>
-            ))) : <div className="col-12 text-center">We don't have any car for rent yet!</div> }
+            ))
+          ) : (
+            <div className="col-12 text-center">
+              We don't have any car for renting yet!
+            </div>
+          )}
 
           </div>
         </div>
       </section>
 
       <section className="mt-5 py-3">
+        <div className="container">
+          <h2 className="text-center">
+            Selling Cars
+          </h2>
+          <div className="row mt-5 d-flex justify-content-center">
+
+          {sellingCars.length !== 0 ? (
+            sellingCars.map((car) => (
+              <div className="col-3 mb-3" key={car.id}>
+                <div className="card shadow-lg rounded position-relative">
+                  {car.is_sold && (
+                    <div
+                      className="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center"
+                      style={{
+                        backgroundColor: "rgba(0, 0, 0, 0.7)",
+                        zIndex: 1,
+                      }}
+                    >
+                      <span className="text-white fs-4">Sold</span>
+                    </div>
+                  )}
+                  <span className="rental__card-price bg-primary text-white">
+                    {car.selling_price}$
+                  </span>
+                  <img
+                    src={`${car.picture}`}
+                    alt={car.name}
+                    className="card-img-top rental__card-img"
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title text-center">{car.name}</h5>
+                    <p className="card-text text-center">{car.year}</p>
+                  </div>
+                  <div className="card-footer text-center">
+                    <Link
+                      to={`/car/details/${car.id}`}
+                      state={{ car: car }}
+                      className="btn btn-primary"
+                    >
+                      View Details
+                      <FontAwesomeIcon icon={faCaretRight} className="ms-2" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="col-12 text-center">
+              We don't have any car for selling yet!
+            </div>
+          )}
+
+          </div>
+        </div>
+      </section>
+
+      <section className="mt-5 py-3" id="grey">
         <div className="container">
           <h2 className="text-center">
             Car Parts

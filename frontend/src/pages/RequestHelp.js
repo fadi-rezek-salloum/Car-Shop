@@ -5,6 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import useAxios from '../utils/useAxios'
 import AuthContext from '../context/AuthContext';
 
+import FullScreenAlert from '../components/FullScreenAlert'
+
 const RequestHelp = () => {
 
   mapboxgl.accessToken = 'pk.eyJ1IjoidW5pdmVyc2l0eXByb2plY3QiLCJhIjoiY2w0MHl5dmllMDEyYTNqa2N4eWkzdTh0eiJ9.KcdXMnpdvR-ahofsdWlKTQ'
@@ -59,7 +61,7 @@ const RequestHelp = () => {
     let response = await api.post('/api/help/', data)
 
     if( response.status === 200 ) {
-      alert('You have requested help successfully!')
+      <FullScreenAlert message="You have requested help successfully!" />
     }
   }
 

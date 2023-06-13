@@ -5,11 +5,14 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 
 from users.models import Customer
 
-class Car(models.Model):
 
-    class TransmissionChoices(models.Choices):
-        AUTOMATIC = ('A', 'Automatic')
-        MANUAL = ('M', 'Manual')
+TransmissionChoices = (
+    ('M', 'Manual'),
+    ('A', 'Automatic'),
+)
+
+
+class Car(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -18,41 +21,55 @@ class Car(models.Model):
     country = models.CharField(max_length=40)
     picture = models.ImageField(upload_to='cars/')
     fuel_type = models.CharField(max_length=40)
-    transmission = models.CharField(max_length=15, choices=TransmissionChoices.choices)
+    transmission = models.CharField(max_length=15, choices=TransmissionChoices)
     seats = models.IntegerField(default=5)
     engine_capacity = models.CharField(max_length=25)
     max_power = models.CharField(max_length=25)
     kms_driven = models.IntegerField(default=0)
 
-    price = models.DecimalField(max_digits=20, decimal_places=0)
     location = models.CharField(max_length=255, null=True, blank=True)
 
-    for_sale = models.BooleanField(default=False)   
+    for_sale = models.BooleanField(default=False)
+
+    rental_price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
+    selling_price = models.DecimalField(max_digits=20, decimal_places=2, default=0.00)
 
     created = models.DateField(auto_now_add=True)
 
     def get_location_cords(self):
         return self.location.split(',')
-
-    class Meta:
-        abstract = True
+    
+    def is_sold(self):
+        try:
+            return self.sellcar_set.get(car__id=self.id) is not None
+        except:
+            return False
+        
+    def rental_days(self):
+        try:
+            rental_car = self.rentalcar_set.filter(car__id=self.id).order_by('-start_date').first()
+            return [rental_car.start_date, rental_car.end_date]
+        except:
+            return [False]
 
     
-class RentalCar(Car):
+class RentalCar(models.Model):
     customer = models.ForeignKey(Customer , verbose_name='rental_customer' , on_delete=models.CASCADE)
+
+    car = models.ForeignKey(Car , verbose_name='rental_car' , on_delete=models.CASCADE, null=True)
 
     start_date = models.DateField()
     end_date = models.DateField()
     
     tax = models.DecimalField(default=0, max_digits=10, decimal_places=2)
 
-    plate_numbers = models.CharField(max_length=10, unique=True)
-
     def __str__(self):
         return f"{self.customer.email} - {self.car.name}"
     
-class SellCar(Car):
+class SellCar(models.Model):
     customer = models.ForeignKey(Customer , verbose_name='sell_customer' , on_delete=models.CASCADE)
+
+    car = models.ForeignKey(Car , verbose_name='sell_car' , on_delete=models.CASCADE, null=True)
 
     tax = models.DecimalField(default=0, max_digits=10, decimal_places=2)
 
