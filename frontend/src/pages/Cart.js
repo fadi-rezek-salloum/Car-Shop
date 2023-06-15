@@ -23,7 +23,7 @@ const Cart = (props) => {
           <li key={item.id} className='list-group-item'>
             <div className="row">
               <div className="col-4">
-                {item.name} - {item.brand}
+                {item.name}
               </div>
               <div className="col-4">
                 <button onClick={() => addToCart(item)} className={item.qty >= item.in_stock ? 'btn btn-primary mx-5 px-3 disabled' : 'btn btn-primary mx-5 px-3' } disabled={item.qty >= item.in_stock ? true : false}>

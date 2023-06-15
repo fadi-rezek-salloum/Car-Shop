@@ -9,9 +9,32 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const BuyCar = () => {
   const [sellingCars, setSellingCars] = useState([]);
 
-  let getSellingCars = async () => {
+  const [colors, setColors] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(0.0);
+  const [selectedPriceRange, setSelectedPriceRange] = useState(0);
+  const [selectedColor, setSelectedColor] = useState('');
+
+  let getColors = async () => {
     let response = await axios.get(
-      "http://localhost:8000/api/cars/sell-cars-list/"
+      "http://localhost:8000/api/cars/colors-list/"
+    );
+
+    if (response.status === 200) {
+      setColors(response.data.colors);
+    }
+  };
+
+  let getMaxPrice = async () => {
+    let response = await axios.get("http://localhost:8000/api/cars/max-price/");
+
+    if (response.status === 200) {
+      setMaxPrice( parseInt(response.data.max_price) + 1000  );
+    }
+  };
+
+  let getSellingCars = async (color='', max_price=0.0) => {
+    let response = await axios.get(
+      `http://localhost:8000/api/cars/sell-cars-list/?color=${color}&max_price=${max_price}`
     );
 
     if (response.status === 200) {
@@ -19,14 +42,67 @@ const BuyCar = () => {
     }
   };
 
+  let handleColorChange = (event) => {
+    let color = event.target.value;
+    setSelectedColor(color)
+    getSellingCars(color, selectedPriceRange)
+  }
+
+  let handlePriceRangeChange = (val) => {
+    setSelectedPriceRange(val);
+    getSellingCars(selectedColor, val)
+  }
+
   useEffect(() => {
     getSellingCars();
+    getColors();
+    getMaxPrice();
   }, []);
 
   return (
     <section className="mt-5 py-3">
       <div className="container">
         <h2 className="text-center">Cars for Sale</h2>
+        <div className="row mt-5">
+          <h4 className="text-center">Filter</h4>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="color-select" className="form-label">Color:</label>
+              <select
+                id="color-select"
+                className="form-select"
+                onChange={handleColorChange}
+              >
+                <option value="">All colors</option>
+                {colors.map((color) => (
+                  <option key={color} value={color}>
+                    {color}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="price-slider" className="form-label">Price range:</label>
+              <input
+                type="range"
+                className="form-range"
+                min="0"
+                max={maxPrice}
+                step="500"
+                onChange={(event) =>
+                  handlePriceRangeChange([event.target.value])
+                }
+              />
+              <div className="d-flex justify-content-between">
+                <span>$0</span>
+                <span>${selectedPriceRange}</span>
+                <span>${maxPrice}</span>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="row mt-5 d-flex justify-content-center">
           {sellingCars.length !== 0 ? (
             sellingCars.map((car) => (

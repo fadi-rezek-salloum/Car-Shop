@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 import FullScreenAlert from '../components/FullScreenAlert'
@@ -11,12 +11,12 @@ const BuyCarCheckout = () => {
 
     const { user } = useContext(AuthContext)
 
-    let nav = useNavigate()
-
     let loc = useLocation()
     const { car } = loc.state
 
     let api = useAxios();
+
+    let [successMsg, setSuccessMsg] = useState(false)
 
     useEffect(() => {  
         let price = parseFloat(car.selling_price * 0.5) + parseFloat(car.selling_price)
@@ -36,7 +36,8 @@ const BuyCarCheckout = () => {
       let response = await api.post('/api/cars/sell-car/', data)
 
       if ( response.status === 201 ) {
-        <FullScreenAlert message="You have successfully bought this car!" />
+        setSuccessMsg(true);
+        
       } else {
         alert('Something wrong happened!')
       }
@@ -44,6 +45,9 @@ const BuyCarCheckout = () => {
 
   return (
     <section className='container mt-5'>
+
+      {successMsg && <FullScreenAlert message="You have successfully bought this car!"/>}
+
       <h1 className="text-center">
         Buy Car
       </h1>

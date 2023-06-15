@@ -17,6 +17,8 @@ const RequestHelp = () => {
   const [lat, setLat] = useState(34.8021);
   const [zoom, setZoom] = useState(7);
 
+  let [successMsg, setSuccessMsg] = useState(false)
+
   useEffect(() => {
     if (map.current) return;
     map.current = new mapboxgl.Map({
@@ -61,13 +63,14 @@ const RequestHelp = () => {
     let response = await api.post('/api/help/', data)
 
     if( response.status === 200 ) {
-      <FullScreenAlert message="You have requested help successfully!" />
+      setSuccessMsg(true)
     }
   }
 
 
   return (
     <div className='container mt-5'>
+      {successMsg && <FullScreenAlert message="You have requested help successfully!" />}
       <h1 className="my-5 text-center">
         Request Help Based On Your Location
       </h1>

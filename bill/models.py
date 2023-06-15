@@ -13,6 +13,7 @@ class Bill(models.Model):
     part = models.ManyToManyField(Part, related_name='car_parts_bill')
 
     notes = models.TextField(null=True, blank=True)
+    notes_ar = models.TextField(null=True, blank=True)
 
     total_price = models.DecimalField(max_digits=15, decimal_places=2)
 

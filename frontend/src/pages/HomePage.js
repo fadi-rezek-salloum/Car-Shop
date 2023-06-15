@@ -358,7 +358,7 @@ const HomePage = (props) => {
                       {part.name}
                     </h5>
                     <p className="card-text text-center">
-                      {part.brand} - {part.country}
+                      {part.country}
                     </p>
 
                   </div>

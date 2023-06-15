@@ -14,15 +14,21 @@ class HistorySerializer(ModelSerializer):
         fields = '__all__'
 
     def get_item_type(self, obj):
-        return obj.item_type.name
+        if obj.car is not None:
+            return 'car'
+        else:
+            return 'part' 
     
     def get_item_name(self, obj):
-        return obj.item.name
+        if obj.car is not None:
+            return obj.car.name
+        else:
+            return obj.part.name
     
     def get_item_is_sold(self, obj):
         try:
-            if obj.item_type.name == 'car':
-                if obj.item.id == obj.item.sellcar_set.first().car.id:
+            if obj.car is not None:
+                if obj.car.id == obj.car.sellcar_set.first().car.id:
                     return True
                 else:
                     return False

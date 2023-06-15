@@ -17,15 +17,33 @@ class Car(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     name = models.CharField(max_length=40)
+    name_ar = models.CharField(max_length=40, null=True, blank=True)
+
+
     year = models.IntegerField(validators=[MinValueValidator(1000), MaxValueValidator(9999)])
+
     country = models.CharField(max_length=40)
+    country_ar = models.CharField(max_length=40, null=True, blank=True)
+
     picture = models.ImageField(upload_to='cars/')
+
     fuel_type = models.CharField(max_length=40)
+    fuel_type_ar = models.CharField(max_length=40, null=True, blank=True)
+
     transmission = models.CharField(max_length=15, choices=TransmissionChoices)
+
     seats = models.IntegerField(default=5)
+
     engine_capacity = models.CharField(max_length=25)
+    engine_capacity_ar = models.CharField(max_length=25, null=True, blank=True)
+
     max_power = models.CharField(max_length=25)
+    max_power_ar = models.CharField(max_length=25, null=True, blank=True)
+
     kms_driven = models.IntegerField(default=0)
+
+    color = models.CharField(max_length=25)
+    color_ar = models.CharField(max_length=25, null=True, blank=True)
 
     location = models.CharField(max_length=255, null=True, blank=True)
 

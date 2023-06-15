@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 
 import FullScreenAlert from '../components/FullScreenAlert'
@@ -13,14 +13,12 @@ const RentCarCheckout = () => {
     const [ endDate, setEndDate ] = useState('')
     const [ location, setLocation ] = useState('')
 
-    const { user } = useContext(AuthContext)
+    let [successMsg, setSuccessMsg] = useState(false)
 
-    let nav = useNavigate()
+    const { user } = useContext(AuthContext)
 
     let loc = useLocation()
     const { car } = loc.state
-
-
 
     let api = useAxios()
 
@@ -52,7 +50,7 @@ const RentCarCheckout = () => {
       let response = await api.post('/api/cars/rent-car/', data)
 
       if ( response.status === 201 ) {
-        <FullScreenAlert message="You have successfully rented this car!" />
+        setSuccessMsg(true);
       } else {
         alert('Something wrong happened!')
       }
@@ -60,6 +58,8 @@ const RentCarCheckout = () => {
 
   return (
     <section className='container mt-5'>
+      {successMsg && <FullScreenAlert message="You have successfully rented this car!" />}
+      
       <h1 className="text-center">
         Rent Car
       </h1>

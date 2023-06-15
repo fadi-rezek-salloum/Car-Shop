@@ -44,6 +44,16 @@ const Header = (props) => {
               </Link>
             </li>
             <li className="nav-item">
+              <Link to="/find/car" className="nav-link text-primary">
+                Find Car
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/part/buy" className="nav-link text-primary">
+                Buy Parts
+              </Link>
+            </li>
+            <li className="nav-item">
               <Link to="/car/rent" className="nav-link text-primary">
                 Rent Car
               </Link>

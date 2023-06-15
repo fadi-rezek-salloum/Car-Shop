@@ -4,6 +4,7 @@ from cars.models import Car, RentalCar, SellCar
 class CarSerializer(ModelSerializer):
     is_sold = SerializerMethodField()
     rental_days = SerializerMethodField()
+    cords = SerializerMethodField()
     class Meta:
         model = Car
         fields = '__all__'
@@ -13,6 +14,9 @@ class CarSerializer(ModelSerializer):
 
     def get_rental_days(self, obj):
         return obj.rental_days()
+
+    def get_cords(self, obj):
+        return obj.get_location_cords()
 
 class RentalCarSerializer(ModelSerializer):
     class Meta:
