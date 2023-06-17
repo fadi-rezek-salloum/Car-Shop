@@ -37,7 +37,7 @@ const RequestHelp = () => {
         showUserHeading: true
       }),
     );
-  });
+  }, []);
 
   useEffect(() => {
     if (!map.current) return;
@@ -52,20 +52,32 @@ const RequestHelp = () => {
 
   let api = useAxios()
 
-  const handleHelp = async () => {
+  const handleHelpSuccess = async () => {
 
-    const data = {
-      lng: lng,
-      lat: lat,
-      user_id: user.user_id
+    const query = new URLSearchParams(window.location.search);
+
+    if (query.get('success')) {
+      const data = {
+        lng: lng,
+        lat: lat,
+        user_id: user.user_id
+      }
+
+      let response = await api.post('/api/help/', data)
+
+      if( response.status === 200 ) {
+        setSuccessMsg(true)
+      }
     }
 
-    let response = await api.post('/api/help/', data)
-
-    if( response.status === 200 ) {
-      setSuccessMsg(true)
+    else if (query.get('canceled')) {
+      alert('Error in Handling Payment!')
     }
   }
+
+  useEffect(() => {
+    handleHelpSuccess();
+  })
 
 
   return (
@@ -80,9 +92,11 @@ const RequestHelp = () => {
         </div>
       </div>
       <div className="row my-5">
-      <button className="btn btn-primary w-50 mx-auto my-5" onClick={handleHelp}>
-        Request Help
-      </button>
+      <form action='http://localhost:8000/api/help/create-checkout-session/' method='POST'>
+        <button className="btn btn-primary w-50 mx-auto my-5" type='submit'>
+          Request Help
+        </button>
+      </form>
       </div>
     </div>
   )
