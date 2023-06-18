@@ -97,5 +97,7 @@
     "home__ss": "Selling Cars",
     "home__p1": "Backend Developer",
     "home__p2": "Frontend Developer",
-    "home__p3": "Graphic Designer"
+    "home__p3": "Graphic Designer",
+    "alert__related": "Recommended Parts",
+    "alert__related-empty": "We can't recommend any part right now!"
 }
