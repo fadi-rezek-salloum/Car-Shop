@@ -11,4 +11,6 @@ urlpatterns = [
 
     path('colors-list/', views.get_all_colors),
     path('max-price/', views.get_max_price),
+
+    path('predict-selling-price/<id>/', views.predict_selling_price),
 ]

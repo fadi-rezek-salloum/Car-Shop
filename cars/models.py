@@ -27,23 +27,29 @@ class Car(models.Model):
 
     picture = models.ImageField(upload_to='cars/')
 
-    fuel_type = models.CharField(max_length=40)
-    fuel_type_ar = models.CharField(max_length=40, null=True, blank=True)
+    fuel = models.CharField(max_length=40)
+    fuel_ar = models.CharField(max_length=40, null=True, blank=True)
+
+    seller_type = models.CharField(max_length=50, null=True, blank=True, default="Individual")
+    seller_type_ar = models.CharField(max_length=50, null=True, blank=True, default="فردي")
+
+    owner = models.CharField(max_length=50, null=True, blank=True, default="First Owner")
+    owner_ar = models.CharField(max_length=50, null=True, blank=True, default="راكب أول")
 
     transmission = models.CharField(max_length=15, choices=TransmissionChoices)
 
     seats = models.IntegerField(default=5)
 
-    engine_capacity = models.CharField(max_length=25)
-    engine_capacity_ar = models.CharField(max_length=25, null=True, blank=True)
+    engine = models.CharField(max_length=25)
+    engine_ar = models.CharField(max_length=25, null=True, blank=True)
 
-    milage = models.CharField(max_length=25, null=True, blank=True)
-    milage_ar = models.CharField(max_length=25, null=True, blank=True)
+    mileage = models.CharField(max_length=25, null=True, blank=True)
+    mileage_ar = models.CharField(max_length=25, null=True, blank=True)
 
     max_power = models.CharField(max_length=25)
     max_power_ar = models.CharField(max_length=25, null=True, blank=True)
 
-    kms_driven = models.IntegerField(default=0)
+    km_driven = models.IntegerField(default=0)
 
     color = models.CharField(max_length=25)
     color_ar = models.CharField(max_length=25, null=True, blank=True)

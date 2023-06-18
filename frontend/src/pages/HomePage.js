@@ -343,7 +343,7 @@ const HomePage = (props) => {
                         state={{ car: car }}
                         className="btn btn-primary"
                       >
-                        {t("rent__list-empty")}
+                        {t("rent__list-details")}
                         <FontAwesomeIcon icon={faCaretRight} className="ms-2" />
                       </Link>
                     </div>

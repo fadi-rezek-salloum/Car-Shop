@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Link, useLocation } from "react-router-dom";
+
+import axios from "axios"
 
 import { useTranslation } from "react-i18next";
 
@@ -20,6 +22,29 @@ const CarDetails = () => {
 
   let loc = useLocation();
   const { car } = loc.state;
+
+  const getPredictedSellingPrice = async () => {
+    let response = await axios.get(`http://localhost:8000/api/cars/predict-selling-price/${car.id}/`)
+
+    if ( response.status === 200 ) {
+      document.getElementById("predictedPrice").textContent = parseFloat(response.data.result) + '$';
+    }
+  }
+
+  useEffect(() => {
+    if ( car.for_sale ) {
+      getPredictedSellingPrice()
+    }
+  })
+
+  const TRANS_MAPPING = {
+    'M': 'Manual',
+    'A': 'Automatic'
+  };
+
+  function getDisplayName(value) {
+    return TRANS_MAPPING[value] || value;
+  }
 
   return (
     <section className="container my-5">
@@ -60,7 +85,7 @@ const CarDetails = () => {
               <FontAwesomeIcon icon={faDriversLicense} className="me-2" />
               {t("details__fuel")}
               <span className="text-muted ms-2">
-                {i18n.language === "ar" ? car.fuel_type_ar : car.fuel_type}
+                {i18n.language === "ar" ? car.fuel_ar : car.fuel}
               </span>
             </h3>
           </div>
@@ -74,7 +99,7 @@ const CarDetails = () => {
                   ? car.transmission === "Automatic"
                     ? "أوتوماتيك"
                     : "عادي"
-                  : car.transmission}
+                  : getDisplayName(car.transmission)}
               </span>
             </h3>
           </div>
@@ -83,7 +108,17 @@ const CarDetails = () => {
             <h3 className="text-primary">
               <FontAwesomeIcon icon={faNoteSticky} className="me-2" />
               {t("details__milage")}
-              <span className="text-muted ms-2">{car.kms_driven}</span> KM
+              <span className="text-muted ms-2">
+                {i18n.language === 'ar' ? car.mileage_ar : car.mileage}
+              </span>
+            </h3>
+          </div>
+
+          <div className="row mt-2">
+            <h3 className="text-primary">
+              <FontAwesomeIcon icon={faNoteSticky} className="me-2" />
+              {t("details__km")}
+              <span className="text-muted ms-2">{car.km_driven}</span> KM
             </h3>
           </div>
 
@@ -121,8 +156,8 @@ const CarDetails = () => {
               {t("details__capacity")}
               <span className="text-muted ms-2">
                 {i18n.language === "ar"
-                  ? car.engine_capacity_ar
-                  : car.engine_capacity}
+                  ? car.engine_ar
+                  : car.engine}
               </span>
             </h3>
           </div>
@@ -142,6 +177,12 @@ const CarDetails = () => {
                   <FontAwesomeIcon icon={faDollar} className="me-2" />
                   {t("details__selling")}
                   <span className="text-muted ms-2">{car.selling_price}</span>
+                  {car.for_sale &&
+                  <div className="alert bg-primary text-white mt-3 d-flex justify-content-between">
+                    {i18n.language === 'ar' ? <div>السعر المتوقع:</div> : <div>Predicted Price</div>}
+                    <div id="predictedPrice"></div>
+                    </div>
+                  }
                 </div>
               )}
             </h3>
