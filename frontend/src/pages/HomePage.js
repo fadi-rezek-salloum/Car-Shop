@@ -269,7 +269,7 @@ const HomePage = (props) => {
                       </div>
                     )}
                     <span className="rental__card-price bg-primary text-white">
-                      {car.rental_price}$ / day
+                      {car.rental_price}$ / {t("rent__list-day")}
                     </span>
                     <img
                       src={`${car.picture}`}
@@ -377,7 +377,9 @@ const HomePage = (props) => {
                       <h5 className="card-title text-center">
                         {i18n.language === "ar" ? part.name_ar : part.name}
                       </h5>
-                      <p className="card-text text-center">{part.country}</p>
+                      <p className="card-text text-center">
+                        {i18n.language === 'ar' ? part.country_ar : part.country}
+                      </p>
                     </div>
                     <div className="card-footer text-center">
                       <button
