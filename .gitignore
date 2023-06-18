@@ -3,7 +3,6 @@
 .DS_Store
 .env
 */settings/local.py
-/staticfiles/*
 /mediafiles/*
 __pycache__/
 /.vscode/
@@ -50,5 +49,5 @@ tmp_email/
 .envrc
 .tool-versions
 
-uploads/
+/uploads/*
 temp/
