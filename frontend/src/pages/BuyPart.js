@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 import axios from "axios";
 
@@ -9,13 +9,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const BuyPart = (props) => {
   const { cartItems, addToCart } = props.state;
 
-  const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedBrand, setSelectedBrand] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedBrand, setSelectedBrand] = useState("");
 
   const [sellingParts, setSellingParts] = useState([]);
 
   const [brands, setBrands] = useState([]);
   const [countries, setCountries] = useState([]);
+
+  const [t, i18n] = useTranslation();
 
   let getCountries = async () => {
     let response = await axios.get(
@@ -37,7 +39,7 @@ const BuyPart = (props) => {
     }
   };
 
-  let getSellingParts = async (brand='', country='') => {
+  let getSellingParts = async (brand = "", country = "") => {
     let response = await axios.get(
       `http://localhost:8000/api/parts/parts-list/?brand=${brand}&country=${country}`
     );
@@ -68,13 +70,13 @@ const BuyPart = (props) => {
   return (
     <section className="mt-5 py-3">
       <div className="container">
-        <h2 className="text-center">Parts for Sale</h2>
+        <h2 className="text-center">{t("buy__part-title")}</h2>
         <div className="row mt-5">
-          <h4 className="text-center">Filter</h4>
+          <h4 className="text-center">{t("buy__part-filter")}</h4>
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="country-select" className="form-label">
-                Country:
+                {t("details__country")}
               </label>
               <select
                 id="country-select"
@@ -93,7 +95,7 @@ const BuyPart = (props) => {
           <div className="col-md-6">
             <div className="form-group">
               <label htmlFor="brand-select" className="form-label">
-                Brand:
+                {t("details__brand")}
               </label>
               <select
                 id="brand-select"
@@ -124,7 +126,9 @@ const BuyPart = (props) => {
                     className="card-img-top rental__card-img"
                   />
                   <div className="card-body">
-                    <h5 className="card-title text-center">{part.name}</h5>
+                    <h5 className="card-title text-center">
+                      {i18n.language === "ar" ? part.name_ar : part.name}
+                    </h5>
                     <p className="card-text text-center">{part.country}</p>
                   </div>
                   <div className="card-footer text-center">
@@ -133,7 +137,7 @@ const BuyPart = (props) => {
                       id={`item-${part.id}`}
                       onClick={() => addToCart(part)}
                     >
-                      Add To Cart
+                      {t("buy__part-add")}
                       <FontAwesomeIcon icon={faCartShopping} className="ms-2" />
                     </button>
                   </div>
@@ -141,9 +145,7 @@ const BuyPart = (props) => {
               </div>
             ))
           ) : (
-            <div className="col-12 text-center">
-              We don't have any car parts yet!
-            </div>
+            <div className="col-12 text-center">{t("buy__part-empty")}</div>
           )}
         </div>
       </div>

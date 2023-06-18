@@ -3,28 +3,32 @@ import AuthContext from "../context/AuthContext";
 
 import { useLocation } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 import { faUser, faLock, faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const LoginPage = (props) => {
   let { loginUser } = useContext(AuthContext);
 
-  let { state } = useLocation()
-  let { referer } = state || ''
+  const [t, i18n] = useTranslation();
+
+  let { state } = useLocation();
+  let { referer } = state || "";
 
   return (
     <section className="mt-5">
-      <h1 className="text-center">Login</h1>
+      <h1 className="text-center">{t("login__title")}</h1>
       <form className="w-50 mt-5 mx-auto" onSubmit={loginUser}>
         <label htmlFor="email" className="form-label">
           <FontAwesomeIcon icon={faUser} className="me-2" />
-          Email
+          {t("register__email")}
         </label>
         <input
           type="email"
           name="email"
           id="email"
-          placeholder="Enter Email..."
+          placeholder='{t("register__email")}...'
           className="form-control"
           required
         />
@@ -34,13 +38,13 @@ const LoginPage = (props) => {
 
         <label htmlFor="password" className="form-label">
           <FontAwesomeIcon icon={faLock} className="me-2" />
-          Password
+          {t("register__pass1")}
         </label>
         <input
           type="password"
           name="password"
           id="password"
-          placeholder="Enter Password..."
+          placeholder='{t("register__pass1")}'
           className="form-control"
           required
         />
@@ -48,7 +52,7 @@ const LoginPage = (props) => {
 
         <button type="submit" className="btn btn-primary w-100">
           <FontAwesomeIcon icon={faSignIn} className="mx-2" />
-          Login
+          {t("login__title")}
         </button>
       </form>
     </section>

@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 import styled from "styled-components";
 import AuthContext from "../context/AuthContext";
 
@@ -10,6 +12,8 @@ import UserLogo from "../images/user.png";
 
 const Header = (props) => {
   const { user, logoutUser } = useContext(AuthContext);
+
+  const [t, i18n] = useTranslation();
 
   const { countCartItems } = props.state;
 
@@ -35,34 +39,57 @@ const Header = (props) => {
           <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link to="/" className="nav-link text-primary">
-                Home
+                {t("header__home")}
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/car/buy" className="nav-link text-primary">
-                Buy Car
+                {t("header__buy-car")}
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/find/car" className="nav-link text-primary">
-                Find Car
+                {t("header__find")}
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/part/buy" className="nav-link text-primary">
-                Buy Parts
+                {t("header__buy-part")}
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/car/rent" className="nav-link text-primary">
-                Rent Car
+                {t("header__rent")}
               </Link>
             </li>
 
             <li className="nav-item">
               <Link to="/request-help" className="nav-link text-primary">
-                Request Help
+                {t("header__request")}
               </Link>
+            </li>
+
+            <li className="nav-item">
+              {i18n.language === "en" && (
+                <button
+                  onClick={() => {
+                    i18n.changeLanguage("ar");
+                  }}
+                  className="btn btn-primary text-white"
+                >
+                  Ar
+                </button>
+              )}
+              {i18n.language === "ar" && (
+                <button
+                  onClick={() => {
+                    i18n.changeLanguage("en");
+                  }}
+                  className="btn btn-primary text-white"
+                >
+                  En
+                </button>
+              )}
             </li>
 
             <li className="nav-item">
@@ -70,7 +97,7 @@ const Header = (props) => {
                 to="/cart"
                 className="nav-link text-primary position-relative"
               >
-                Cart
+                {t("header__cart")}
                 <span className="position-absolute top-25 start-100 ms-1 translate-middle badge rounded-pill bg-danger">
                   {countCartItems}
                 </span>
@@ -84,7 +111,7 @@ const Header = (props) => {
                 to="/login"
                 className={user ? "d-none" : "btn btn-outline-success mx-1"}
               >
-                Login
+                {t("header__login")}
               </Link>
             </li>
 
@@ -93,7 +120,7 @@ const Header = (props) => {
                 to="/register"
                 className={user ? "d-none" : "btn btn-primary mx-1"}
               >
-                Register
+                {t("header__register")}
               </Link>
             </li>
 
@@ -116,12 +143,12 @@ const Header = (props) => {
               >
                 <li>
                   <Link to="/customer-history" className="dropdown-item">
-                    History
+                    {t("header__history")}
                   </Link>
                 </li>
                 <li>
                   <button onClick={logoutUser} className="dropdown-item">
-                    Logout
+                    {t("header__logout")}
                   </button>
                 </li>
               </ul>

@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect, useContext } from "react";
 import AuthContext from "../context/AuthContext";
 
-import axios from "axios"
+import { useTranslation } from "react-i18next";
+
+import axios from "axios";
 
 import {
   faPlus,
@@ -10,7 +12,7 @@ import {
   faLock,
   faEnvelope,
   faPhone,
-  faAddressCard
+  faAddressCard,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -54,6 +56,7 @@ const RegisterPage = () => {
 
   const [errMsg, setErrMsg] = useState("");
 
+  const [t, i18n] = useTranslation();
 
   useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
@@ -95,7 +98,7 @@ const RegisterPage = () => {
       {
         withCredentials: true,
       }
-    )
+    );
 
     if (response.status === 201) {
       setFirstName("");
@@ -108,8 +111,7 @@ const RegisterPage = () => {
       setMatchPwd("");
       setErrMsg("");
 
-      navigate('/login');
-
+      navigate("/login");
     } else {
       setErrMsg(response);
     }
@@ -117,7 +119,7 @@ const RegisterPage = () => {
 
   return (
     <section className="mt-5">
-      <h1 className="text-center">Register A New Account</h1>
+      <h1 className="text-center">{t("register__title")}</h1>
       <form className="w-50 mt-5 mx-auto" onSubmit={handelSubmit}>
         <div
           ref={errRef}
@@ -129,13 +131,13 @@ const RegisterPage = () => {
 
         <label htmlFor="first_name" className="form-label">
           <FontAwesomeIcon icon={faUser} className="me-2" />
-          First Name
+          {t("register__fname")}
         </label>
         <input
           type="text"
           name="first_name"
           id="fist_name"
-          placeholder="Enter First Name..."
+          placeholder='{t("register__fname")}...'
           className="form-control"
           onChange={(e) => setFirstName(e.target.value)}
           value={firstName}
@@ -145,13 +147,13 @@ const RegisterPage = () => {
 
         <label htmlFor="middle_name" className="form-label">
           <FontAwesomeIcon icon={faUser} className="me-2" />
-          Middle Name
+          {t("register__mname")}
         </label>
         <input
           type="text"
           name="middle_name"
           id="middle_name"
-          placeholder="Enter Middle Name..."
+          placeholder='{t("register__fname")}...'
           className="form-control"
           onChange={(e) => setMiddleName(e.target.value)}
           value={middleName}
@@ -160,13 +162,13 @@ const RegisterPage = () => {
 
         <label htmlFor="last_name" className="form-label">
           <FontAwesomeIcon icon={faUser} className="me-2" />
-          Last Name
+          {t("register__lname")}
         </label>
         <input
           type="text"
           name="last_name"
           id="last_name"
-          placeholder="Enter Last Name..."
+          placeholder='{t("register__fname")}...'
           className="form-control"
           onChange={(e) => setLastName(e.target.value)}
           value={lastName}
@@ -176,13 +178,13 @@ const RegisterPage = () => {
 
         <label htmlFor="email" className="form-label">
           <FontAwesomeIcon icon={faEnvelope} className="me-2" />
-          Email
+          {t("register__email")}
         </label>
         <input
           type="email"
           name="email"
           id="email"
-          placeholder="Enter Email..."
+          placeholder='{t("register__fname")}...'
           className={
             validEmail
               ? "form-control form__input-valid"
@@ -199,13 +201,13 @@ const RegisterPage = () => {
 
         <label htmlFor="phone" className="form-label">
           <FontAwesomeIcon icon={faPhone} className="me-2" />
-          Phone Number
+          {t("register__phone")}
         </label>
         <input
           type="text"
           name="phone"
           id="phone"
-          placeholder="Enter Phone..."
+          placeholder='{t("register__phone")}...'
           className="form-control"
           onChange={(e) => setPhone(e.target.value)}
           value={phone}
@@ -215,13 +217,13 @@ const RegisterPage = () => {
 
         <label htmlFor="address" className="form-label">
           <FontAwesomeIcon icon={faAddressCard} className="me-2" />
-          Address
+          {t("register__address")}
         </label>
         <input
           type="text"
           name="address"
           id="address"
-          placeholder="Enter Address..."
+          placeholder='{t("register__fname")}...'
           className="form-control"
           onChange={(e) => setAddress(e.target.value)}
           value={address}
@@ -231,13 +233,13 @@ const RegisterPage = () => {
 
         <label htmlFor="password" className="form-label">
           <FontAwesomeIcon icon={faLock} className="me-2" />
-          Password
+          {t("register__pass1")}
         </label>
         <input
           type="password"
           name="password"
           id="password"
-          placeholder="Enter Password..."
+          placeholder='{t("register__pass1")}...'
           className={
             validPwd
               ? "form-control form__input-valid"
@@ -256,10 +258,10 @@ const RegisterPage = () => {
           className={pwdFocus && pwd && !validPwd ? "form-text" : "d-none"}
         >
           <FontAwesomeIcon icon={faInfoCircle} className="me-2" />
-          8 to 24 characters. Must include uppercase and lowercase letters, a
-          number and a special character. <br />
+          {t("register__pass1-hint1")}
+          <br />
           <FontAwesomeIcon icon={faInfoCircle} className="me-2" />
-          Allowed special characters:{" "}
+          {t("register__pass1-hint2")}{" "}
           <span aria-label="exclamation mark">!</span>{" "}
           <span aria-label="at symbol">@</span>{" "}
           <span aria-label="hashtag">#</span>{" "}
@@ -270,14 +272,14 @@ const RegisterPage = () => {
 
         <label htmlFor="confirm_pwd" className="form-label">
           <FontAwesomeIcon icon={faLock} className="me-2" />
-          Confirm Password
+          {t("register__pass2")}
         </label>
         <input
           type="password"
           name="confirm_pwd"
           id="confirm_pwd"
           aria-describedby="confirmnote"
-          placeholder="Confirm Password..."
+          placeholder='{t("register__fname")}...'
           className={
             validMatch
               ? "form-control form__input-valid"
@@ -295,23 +297,17 @@ const RegisterPage = () => {
           className={matchFocus && !validMatch ? "form-text" : "d-none"}
         >
           <FontAwesomeIcon icon={faInfoCircle} />
-          Must match the first password input field.
+          {t("register__pass2-hint")}
         </div>
         <br />
 
         <button
-          disabled={
-            !validEmail ||
-            !validPwd ||
-            !validMatch
-              ? true
-              : false
-          }
+          disabled={!validEmail || !validPwd || !validMatch ? true : false}
           className="btn btn-primary mb-5 w-100"
           type="submit"
         >
           <FontAwesomeIcon icon={faPlus} className="mx-2" />
-          Register New Account
+          {t("register__submit")}
         </button>
       </form>
     </section>

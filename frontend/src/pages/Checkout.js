@@ -1,82 +1,99 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState } from "react";
 
-import AuthContext from '../context/AuthContext';
-import FullScreenAlert from '../components/FullScreenAlert'
+import AuthContext from "../context/AuthContext";
+import FullScreenAlert from "../components/FullScreenAlert";
 
-import {
-  faDollarSign
-} from "@fortawesome/free-solid-svg-icons";
+import { faDollarSign } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import useAxios from '../utils/useAxios'
+import { useTranslation } from "react-i18next";
+
+import useAxios from "../utils/useAxios";
 
 const Checkout = (props) => {
+  const [notes, setNotes] = useState("");
+  const [notesAr, setNotesAr] = useState("");
 
-  const [ notes, setNotes ] = useState('')
-  const [ notesAr, setNotesAr ] = useState('')
+  const [t, i18n] = useTranslation();
 
-  let [successMsg, setSuccessMsg] = useState(false)
+  let [successMsg, setSuccessMsg] = useState(false);
 
-  const { user } = useContext(AuthContext)
+  const { user } = useContext(AuthContext);
 
-  const { cartItems, setCartItems } = props.state
+  const { cartItems, setCartItems } = props.state;
 
-  const itemsPrice = cartItems?.reduce((a, c) => a + c.price * c.qty, 0)
+  const itemsPrice = cartItems?.reduce((a, c) => a + c.price * c.qty, 0);
 
-  let api = useAxios()
+  let api = useAxios();
 
   const handleCheckout = async (e) => {
-    e.preventDefault()
-    
+    e.preventDefault();
+
     const data = {
       user: user.user_id,
       cartItems: cartItems,
       notes: notes,
       notes_ar: notesAr,
-      total_price: itemsPrice
-    }
+      total_price: itemsPrice,
+    };
 
-    let response = await api.post('/api/bill/checkout/', data)
+    let response = await api.post("/api/bill/checkout/", data);
 
-    if ( response.status === 200 ) {
-      setCartItems([])
-      setSuccessMsg(true)
+    if (response.status === 200) {
+      setCartItems([]);
+      setSuccessMsg(true);
     }
-    
-  }
+  };
 
   return (
-    <main className='container mt-5'>
-      {successMsg && <FullScreenAlert message="You have successfully bought this/these parts!"/>}
+    <main className="container mt-5">
+      {successMsg && <FullScreenAlert message={t("checkout__success")} />}
 
-      <h1 className="text-center mb-5">
-        Checkout
-      </h1>
+      <h1 className="text-center mb-5">{t("checkout__title")}</h1>
 
-      {cartItems.length === 0 ? (<h1 className="text-center">You didn't select any item!</h1>) : (
-
-        <form method="post" className='w-50 mx-auto' onSubmit={handleCheckout}>
+      {cartItems.length === 0 ? (
+        <h1 className="text-center">{t("checkout__empty")}</h1>
+      ) : (
+        <form method="post" className="w-50 mx-auto" onSubmit={handleCheckout}>
           <h4 className="text-center">
-            Total price is : ${itemsPrice}  
+            {t("checkout__total")}${itemsPrice}
             <hr />
           </h4>
 
-          <label htmlFor="notes" className='form-label'>Notes</label>
-          <textarea name="notes" id="notes" className='form-control' placeholder='Notes...' value={notes} onChange={(e) => setNotes(e.target.value)} />
+          <label htmlFor="notes" className="form-label">
+            {t("checkout__notes")}
+          </label>
+          <textarea
+            name="notes"
+            id="notes"
+            className="form-control"
+            placeholder='{t("checkout__notes")}...'
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+          />
 
-          <div className='mt-3'>
-          <label htmlFor="notes_ar" className='form-label'>Notes Arabic</label>
-          <textarea name="notes_ar" id="notes_ar" className='form-control' placeholder='Notes Arabic...' value={notesAr} onChange={(e) => setNotesAr(e.target.value)} />
+          <div className="mt-3">
+            <label htmlFor="notes_ar" className="form-label">
+              {t("checkout__notes-arabic")}
+            </label>
+            <textarea
+              name="notes_ar"
+              id="notes_ar"
+              className="form-control"
+              placeholder="Notes Arabic..."
+              value={notesAr}
+              onChange={(e) => setNotesAr(e.target.value)}
+            />
           </div>
 
-          <button type="submit" className='btn btn-primary mt-5 w-100'>
-            <FontAwesomeIcon icon={faDollarSign} className='me-2' />
-            Buy
+          <button type="submit" className="btn btn-primary mt-5 w-100">
+            <FontAwesomeIcon icon={faDollarSign} className="me-2" />
+            {t("checkout__submit")}
           </button>
         </form>
       )}
     </main>
-  )
-}
+  );
+};
 
-export default Checkout
+export default Checkout;

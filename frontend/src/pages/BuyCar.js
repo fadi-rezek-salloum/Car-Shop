@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import { useTranslation } from "react-i18next";
+
 import axios from "axios";
 
 import { faCaretRight } from "@fortawesome/free-solid-svg-icons";
@@ -12,7 +14,9 @@ const BuyCar = () => {
   const [colors, setColors] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0.0);
   const [selectedPriceRange, setSelectedPriceRange] = useState(0);
-  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedColor, setSelectedColor] = useState("");
+
+  const [t, i18n] = useTranslation();
 
   let getColors = async () => {
     let response = await axios.get(
@@ -28,11 +32,11 @@ const BuyCar = () => {
     let response = await axios.get("http://localhost:8000/api/cars/max-price/");
 
     if (response.status === 200) {
-      setMaxPrice( parseInt(response.data.max_price) + 1000  );
+      setMaxPrice(parseInt(response.data.max_price) + 1000);
     }
   };
 
-  let getSellingCars = async (color='', max_price=0.0) => {
+  let getSellingCars = async (color = "", max_price = 0.0) => {
     let response = await axios.get(
       `http://localhost:8000/api/cars/sell-cars-list/?color=${color}&max_price=${max_price}`
     );
@@ -44,14 +48,14 @@ const BuyCar = () => {
 
   let handleColorChange = (event) => {
     let color = event.target.value;
-    setSelectedColor(color)
-    getSellingCars(color, selectedPriceRange)
-  }
+    setSelectedColor(color);
+    getSellingCars(color, selectedPriceRange);
+  };
 
   let handlePriceRangeChange = (val) => {
     setSelectedPriceRange(val);
-    getSellingCars(selectedColor, val)
-  }
+    getSellingCars(selectedColor, val);
+  };
 
   useEffect(() => {
     getSellingCars();
@@ -62,18 +66,23 @@ const BuyCar = () => {
   return (
     <section className="mt-5 py-3">
       <div className="container">
-        <h2 className="text-center">Cars for Sale</h2>
+        <h2 className="text-center">
+          {t("buy__list-title")}
+          Cars for Sale
+        </h2>
         <div className="row mt-5">
-          <h4 className="text-center">Filter</h4>
+          <h4 className="text-center">{t("buy__part-filter")}</h4>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="color-select" className="form-label">Color:</label>
+              <label htmlFor="color-select" className="form-label">
+                {t("details__color")}
+              </label>
               <select
                 id="color-select"
                 className="form-select"
                 onChange={handleColorChange}
               >
-                <option value="">All colors</option>
+                <option value="">{t("details__color")}</option>
                 {colors.map((color) => (
                   <option key={color} value={color}>
                     {color}
@@ -84,7 +93,9 @@ const BuyCar = () => {
           </div>
           <div className="col-md-6">
             <div className="form-group">
-              <label htmlFor="price-slider" className="form-label">Price range:</label>
+              <label htmlFor="price-slider" className="form-label">
+                {t("details__selling")}
+              </label>
               <input
                 type="range"
                 className="form-range"
@@ -116,7 +127,9 @@ const BuyCar = () => {
                         zIndex: 1,
                       }}
                     >
-                      <span className="text-white fs-4">Sold</span>
+                      <span className="text-white fs-4">
+                        {t("buy__list-sold")}
+                      </span>
                     </div>
                   )}
                   <span className="rental__card-price bg-primary text-white">
@@ -128,7 +141,9 @@ const BuyCar = () => {
                     className="card-img-top rental__card-img"
                   />
                   <div className="card-body">
-                    <h5 className="card-title text-center">{car.name}</h5>
+                    <h5 className="card-title text-center">
+                      {i18n.language === "ar" ? car.name_ar : car.name}
+                    </h5>
                     <p className="card-text text-center">{car.year}</p>
                   </div>
                   <div className="card-footer text-center">
@@ -137,7 +152,7 @@ const BuyCar = () => {
                       state={{ car: car }}
                       className="btn btn-primary"
                     >
-                      View Details
+                      {t("rent__list-details")}
                       <FontAwesomeIcon icon={faCaretRight} className="ms-2" />
                     </Link>
                   </div>
@@ -145,9 +160,7 @@ const BuyCar = () => {
               </div>
             ))
           ) : (
-            <div className="col-12 text-center">
-              We don't have any car for selling yet!
-            </div>
+            <div className="col-12 text-center">{t("buy__list-empty")}</div>
           )}
         </div>
       </div>

@@ -5,6 +5,8 @@ import mapboxgl from 'mapbox-gl';
 import useAxios from '../utils/useAxios'
 import AuthContext from '../context/AuthContext';
 
+import { useTranslation } from 'react-i18next';
+
 import FullScreenAlert from '../components/FullScreenAlert'
 
 const RequestHelp = () => {
@@ -16,6 +18,8 @@ const RequestHelp = () => {
   const [lng, setLng] = useState(37.9968);
   const [lat, setLat] = useState(34.8021);
   const [zoom, setZoom] = useState(7);
+
+  const [t, i18n] = useTranslation();
 
   let [successMsg, setSuccessMsg] = useState(false)
 
@@ -37,7 +41,7 @@ const RequestHelp = () => {
         showUserHeading: true
       }),
     );
-  }, []);
+  }, [lng, lat, zoom]);
 
   useEffect(() => {
     if (!map.current) return;
@@ -82,9 +86,9 @@ const RequestHelp = () => {
 
   return (
     <div className='container mt-5'>
-      {successMsg && <FullScreenAlert message="You have requested help successfully!" />}
+      {successMsg && <FullScreenAlert message={t("request__success")} />}
       <h1 className="my-5 text-center">
-        Request Help Based On Your Location
+        {t("request__title")}
       </h1>
       <div ref={mapContainer} className="map-container rounded shadows-lg" style={{'height': '500px'}}>
         <div className="sidebar">
@@ -94,7 +98,7 @@ const RequestHelp = () => {
       <div className="row my-5">
       <form action='http://localhost:8000/api/help/create-checkout-session/' method='POST'>
         <button className="btn btn-primary w-50 mx-auto my-5" type='submit'>
-          Request Help
+          {t("request__btn")}
         </button>
       </form>
       </div>

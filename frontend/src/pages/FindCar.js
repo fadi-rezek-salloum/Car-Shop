@@ -5,11 +5,15 @@ import { useNavigate } from 'react-router-dom'
 
 import axios from "axios";
 
+import { useTranslation } from "react-i18next"
+
 import mapIcon from '../images/map-icon.jpg'
 
 const FindCar = () => {
 
   const [rentCars, setRentCars] = useState([]);
+
+  const [ t, i18n ] = useTranslation();
 
   mapboxgl.accessToken =
     "pk.eyJ1IjoidW5pdmVyc2l0eXByb2plY3QiLCJhIjoiY2w0MHl5dmllMDEyYTNqa2N4eWkzdTh0eiJ9.KcdXMnpdvR-ahofsdWlKTQ";
@@ -96,7 +100,9 @@ const FindCar = () => {
 
   return (
     <div className="container mt-5">
-      <h1 className="my-5 text-center">Request Help Based On Your Location</h1>
+      <h1 className="my-5 text-center">
+        {t("find__title")}
+      </h1>
       <div
         ref={mapContainer}
         className="map-container rounded shadows-lg"

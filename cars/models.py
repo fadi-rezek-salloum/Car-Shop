@@ -37,6 +37,9 @@ class Car(models.Model):
     engine_capacity = models.CharField(max_length=25)
     engine_capacity_ar = models.CharField(max_length=25, null=True, blank=True)
 
+    milage = models.CharField(max_length=25, null=True, blank=True)
+    milage_ar = models.CharField(max_length=25, null=True, blank=True)
+
     max_power = models.CharField(max_length=25)
     max_power_ar = models.CharField(max_length=25, null=True, blank=True)
 
