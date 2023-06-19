@@ -104,7 +104,7 @@ function App() {
               path="/part/buy/"
               element={
                 <BuyPart
-                  state={{ addToCart: addToCart, cartItems: cartItems }}
+                  state={{ addetails__cdToCart: addToCart, cartItems: cartItems }}
                 />
               }
             />

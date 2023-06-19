@@ -99,5 +99,6 @@
     "home__p2": "Frontend Developer",
     "home__p3": "Graphic Designer",
     "alert__related": "Recommended Parts",
-    "alert__related-empty": "We can't recommend any part right now!"
+    "alert__related-empty": "We can't recommend any part right now!",
+    "buy__list-title": "Buy Car"
 }

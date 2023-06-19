@@ -15,12 +15,14 @@ from .utils import read_dataset, transaction_rule
 
 def get_all_countries(request):
     values = Part.objects.values_list('country', flat=True).distinct()
-    return JsonResponse({'countries': list(values)})
+    values_ar = Part.objects.values_list('country_ar', flat=True).distinct()
+    return JsonResponse({'countries': list(values), 'countries_ar': list(values_ar)})
 
 
 def get_all_brands(request):
     values = Part.objects.values_list('name', flat=True).distinct()
-    return JsonResponse({'brands': list(values)})
+    values_ar = Part.objects.values_list('name_ar', flat=True).distinct()
+    return JsonResponse({'brands': list(values), 'brands_ar': list(values_ar)})
 
 
 def associate_parts(request, id):

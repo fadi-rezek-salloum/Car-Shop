@@ -16,7 +16,8 @@ from .utils import read_dataset, clean_dataset, gradient_boosting_regressor
 
 def get_all_colors(request):
     values = Car.objects.values_list('color', flat=True).distinct()
-    return JsonResponse({'colors': list(values)})
+    values_ar = Car.objects.values_list('color_ar', flat=True).distinct()
+    return JsonResponse({'colors': list(values), 'colors_ar': list(values_ar)})
 
 
 def get_max_price(request):

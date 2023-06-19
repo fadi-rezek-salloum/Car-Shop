@@ -12,6 +12,7 @@ const BuyCar = () => {
   const [sellingCars, setSellingCars] = useState([]);
 
   const [colors, setColors] = useState([]);
+  const [colorsAr, setColorsAr] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0.0);
   const [selectedPriceRange, setSelectedPriceRange] = useState(0);
   const [selectedColor, setSelectedColor] = useState("");
@@ -25,6 +26,7 @@ const BuyCar = () => {
 
     if (response.status === 200) {
       setColors(response.data.colors);
+      setColorsAr(response.data.colors_ar);
     }
   };
 
@@ -68,7 +70,6 @@ const BuyCar = () => {
       <div className="container">
         <h2 className="text-center">
           {t("buy__list-title")}
-          Cars for Sale
         </h2>
         <div className="row mt-5">
           <h4 className="text-center">{t("buy__part-filter")}</h4>
@@ -83,9 +84,9 @@ const BuyCar = () => {
                 onChange={handleColorChange}
               >
                 <option value="">{t("details__color")}</option>
-                {colors.map((color) => (
+                {colors.map((color, i) => (
                   <option key={color} value={color}>
-                    {color}
+                    {i18n.language === 'ar' ? colorsAr[i] : color}
                   </option>
                 ))}
               </select>

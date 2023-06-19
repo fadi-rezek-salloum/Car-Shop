@@ -15,7 +15,9 @@ const BuyPart = (props) => {
   const [sellingParts, setSellingParts] = useState([]);
 
   const [brands, setBrands] = useState([]);
+  const [brandsAr, setBrandsAr] = useState([]);
   const [countries, setCountries] = useState([]);
+  const [countriesAr, setCountriesAr] = useState([]);
 
   const [show, setShow] = useState(false);
   const [relatedParts, setRelatedParts] = useState([]);
@@ -29,6 +31,7 @@ const BuyPart = (props) => {
 
     if (response.status === 200) {
       setCountries(response.data.countries);
+      setCountriesAr(response.data.countries_ar);
     }
   };
 
@@ -50,6 +53,7 @@ const BuyPart = (props) => {
 
     if (response.status === 200) {
       setBrands(response.data.brands);
+      setBrandsAr(response.data.brands_ar);
     }
   };
 
@@ -186,10 +190,10 @@ const BuyPart = (props) => {
                 className="form-select"
                 onChange={handleCountryChange}
               >
-                <option value="">All countries</option>
-                {countries.map((country) => (
+                <option value="">{t("details__country")}</option>
+                {countries.map((country, i) => (
                   <option key={country} value={country}>
-                    {country}
+                    {i18n.language === 'ar' ? countriesAr[i] : country}
                   </option>
                 ))}
               </select>
@@ -205,10 +209,10 @@ const BuyPart = (props) => {
                 className="form-select"
                 onChange={handleBrandChange}
               >
-                <option value="">All brands</option>
-                {brands.map((brand) => (
+                <option value="">{t("details__brand")}</option>
+                {brands.map((brand, i) => (
                   <option key={brand} value={brand}>
-                    {brand}
+                    {i18n.language === 'ar' ? brandsAr[i] : brand}
                   </option>
                 ))}
               </select>
