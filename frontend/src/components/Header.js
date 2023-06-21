@@ -69,6 +69,12 @@ const Header = (props) => {
               </Link>
             </li>
 
+            <li className="nav-item">
+              <Link to="/car/predict" className="nav-link text-primary">
+                {t("predict")}
+              </Link>
+            </li>
+
             <li className="nav-item mx-5">
               <Link
                 to="/cart"
