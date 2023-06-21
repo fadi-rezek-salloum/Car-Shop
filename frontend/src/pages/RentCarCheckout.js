@@ -105,7 +105,7 @@ const RentCarCheckout = () => {
           className="form-control"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          placeholder='{t("rent__form-loc")}...'
+          placeholder={t("rent__form-loc")}
           required
         />
         <br />

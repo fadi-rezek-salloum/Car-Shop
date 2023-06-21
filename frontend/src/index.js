@@ -9,7 +9,6 @@ function Root() {
   const { i18n } = useTranslation();
 
   if (i18n.language === 'ar') {
-    console.log('ss');
     import('./AppAr.css');
   }
 

@@ -47,13 +47,13 @@ const CustomerHistory = () => {
                     {item.item_type === "car" ? (
                       <FontAwesomeIcon icon={faCar} className="mx-2" />
                     ) : (
-                      <FontAwesomeIcon icon={faBatteryCar} className="ms-2" />
+                      <FontAwesomeIcon icon={faBatteryCar} className="mx-2" />
                     )}
                     {item.item_type === "part" ||
                     (item.item_type === "car" && item.item_is_sold) === true ? (
                       <span>{t("history__buy")}</span>
                     ) : (
-                      <span>{t("history__buy")}</span>
+                      <span>{t("history__rent")}</span>
                     )}
                     {item.item_name}
                   </span>

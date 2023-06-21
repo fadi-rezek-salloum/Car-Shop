@@ -87,7 +87,7 @@ const BuyPart = (props) => {
 
   return (
     <section className="mt-5 py-3">
-      {relatedParts && (
+      {relatedParts.length !== 0 && (
         <div
           className="modal fade show"
           style={{
@@ -242,10 +242,7 @@ const BuyPart = (props) => {
                     <button
                       className="btn btn-primary"
                       id={`item-${part.id}`}
-                      onClick={() => {
-                        addToCart(part);
-                        getAssociations(part.id);
-                      }}
+                      onClick={() => {addToCart(part); getAssociations(part.id)}}
                     >
                       {" "}
                       {t("buy__part-add")}

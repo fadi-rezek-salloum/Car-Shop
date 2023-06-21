@@ -100,5 +100,7 @@
     "home__p3": "مصمم الجرافيك",
     "alert__related": "القطع الموصى بها",
     "alert__related-empty": "لا يمكننا التوصية بأي قطعة الان!",
-    "buy__list-title": "شراء سيارة"
+    "buy__list-title": "شراء سيارة",
+    "register__title": "إنشاء حساب جديد",
+    "predict": "توقع السعر "
 }

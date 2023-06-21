@@ -95,7 +95,7 @@ const RequestHelp = () => {
           Longitude: {lng} | Latitude: {lat}
         </div>
       </div>
-      <div className="row my-5">
+      <div className="row my-5 text-center">
       <form action='http://localhost:8000/api/help/create-checkout-session/' method='POST'>
         <button className="btn btn-primary w-50 mx-auto my-5" type='submit'>
           {t("request__btn")}

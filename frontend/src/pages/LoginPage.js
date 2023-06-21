@@ -28,7 +28,7 @@ const LoginPage = (props) => {
           type="email"
           name="email"
           id="email"
-          placeholder='{t("register__email")}...'
+          placeholder={t("register__email")}  
           className="form-control"
           required
         />
@@ -44,7 +44,7 @@ const LoginPage = (props) => {
           type="password"
           name="password"
           id="password"
-          placeholder='{t("register__pass1")}'
+          placeholder={t("register__pass1")}
           className="form-control"
           required
         />

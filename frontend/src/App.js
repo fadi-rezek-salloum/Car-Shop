@@ -28,6 +28,7 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import BuyPart from "./pages/BuyPart";
 import FindCar from "./pages/FindCar";
+import CarPredict from "./pages/CarPredict";
 
 function App() {
   const [cartItems, setCartItems] = useState([]);
@@ -99,12 +100,13 @@ function App() {
               }
             />
             <Route path="/car/buy/" element={<BuyCar />} />
+            <Route path="/car/predict/" element={<CarPredict />} />
             <Route path="/car/rent/" element={<RentCar />} />
             <Route
               path="/part/buy/"
               element={
                 <BuyPart
-                  state={{ addetails__cdToCart: addToCart, cartItems: cartItems }}
+                  state={{ addToCart: addToCart, cartItems: cartItems }}
                 />
               }
             />

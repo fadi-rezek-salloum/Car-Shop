@@ -13,9 +13,16 @@ const BuyCar = () => {
 
   const [colors, setColors] = useState([]);
   const [colorsAr, setColorsAr] = useState([]);
+  const [names, setNames] = useState([]);
+  const [namesAr, setNamesAr] = useState([]);
+  const [transmissions, setTransmission] = useState([]);
+  const [transmissionsAr, setTransmissionAr] = useState([]);
   const [maxPrice, setMaxPrice] = useState(0.0);
+  const [minPrice, setMinPrice] = useState(0.0);
   const [selectedPriceRange, setSelectedPriceRange] = useState(0);
   const [selectedColor, setSelectedColor] = useState("");
+  const [selectedName, setSelectedName] = useState("");
+  const [selectedTransmission, setSelectedTransmission] = useState("");
 
   const [t, i18n] = useTranslation();
 
@@ -30,17 +37,45 @@ const BuyCar = () => {
     }
   };
 
+  let getNames = async () => {
+    let response = await axios.get(
+      "http://localhost:8000/api/cars/names-list/"
+    );
+
+    if (response.status === 200) {
+      setNames(response.data.names);
+      setNamesAr(response.data.names_ar);
+    }
+  };
+
+  let getTransmissions = async () => {
+    setTransmission(['Manual', 'Automatic'])
+    setTransmissionAr(['عادي', 'أوتوماتيك'])
+  };
+
   let getMaxPrice = async () => {
     let response = await axios.get("http://localhost:8000/api/cars/max-price/");
 
     if (response.status === 200) {
-      setMaxPrice(parseInt(response.data.max_price) + 1000);
+      let base_price = parseInt(response.data.max_price);
+      let remainder = base_price % 500;
+      setMaxPrice((base_price + (500 - remainder)));
     }
   };
 
-  let getSellingCars = async (color = "", max_price = 0.0) => {
+  let getMinPrice = async () => {
+    let response = await axios.get("http://localhost:8000/api/cars/min-price/");
+
+    if (response.status === 200) {
+      let base_price = parseInt(response.data.min_price);
+      let remainder = base_price % 500;
+      setMinPrice((base_price - remainder));
+    }
+  };
+
+  let getSellingCars = async (color = "", max_price = 0.0, name="", transmission="") => {
     let response = await axios.get(
-      `http://localhost:8000/api/cars/sell-cars-list/?color=${color}&max_price=${max_price}`
+      `http://localhost:8000/api/cars/sell-cars-list/?color=${color}&max_price=${max_price}&name=${name}&transmission=${transmission}`
     );
 
     if (response.status === 200) {
@@ -51,18 +86,40 @@ const BuyCar = () => {
   let handleColorChange = (event) => {
     let color = event.target.value;
     setSelectedColor(color);
-    getSellingCars(color, selectedPriceRange);
+    getSellingCars(color, selectedPriceRange, selectedName, selectedTransmission);
+  };
+
+  let handleNameChange = (event) => {
+    let name = event.target.value;
+    setSelectedName(name);
+    getSellingCars(selectedColor, selectedPriceRange ,name, selectedTransmission);
+  };
+
+  let handleTransmissionChange = (event) => {
+    let transmission = event.target.value;
+    if (transmission === 'ِأوتوماتيك' || transmission === 'Automatic') {
+      transmission = 'A'
+      setSelectedTransmission('A');
+    }
+    else {
+      transmission = 'M'
+      setSelectedTransmission('M')
+    }
+    getSellingCars(selectedColor, selectedPriceRange, selectedName, transmission);
   };
 
   let handlePriceRangeChange = (val) => {
     setSelectedPriceRange(val);
-    getSellingCars(selectedColor, val);
+    getSellingCars(selectedColor, val, selectedName, selectedTransmission);
   };
 
   useEffect(() => {
     getSellingCars();
     getColors();
     getMaxPrice();
+    getMinPrice();
+    getNames();
+    getTransmissions();
   }, []);
 
   return (
@@ -100,7 +157,7 @@ const BuyCar = () => {
               <input
                 type="range"
                 className="form-range"
-                min="0"
+                min={minPrice}
                 max={maxPrice}
                 step="500"
                 onChange={(event) =>
@@ -108,31 +165,56 @@ const BuyCar = () => {
                 }
               />
               <div className="d-flex justify-content-between">
-                <span>$0</span>
+                <span>${minPrice}</span>
                 <span>${selectedPriceRange}</span>
                 <span>${maxPrice}</span>
               </div>
             </div>
           </div>
+          <div className="col-md-6 mt-3">
+            <div className="form-group">
+              <label htmlFor="name-select" className="form-label">
+                {t("details__brand")}
+              </label>
+              <select
+                id="name-select"
+                className="form-select"
+                onChange={handleNameChange}
+              >
+                <option value="">{t("details__brand")}</option>
+                {names.map((name, i) => (
+                  <option key={name} value={name}>
+                    {i18n.language === 'ar' ? namesAr[i] : name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6 mt-3">
+            <div className="form-group">
+              <label htmlFor="transmission-select" className="form-label">
+                {t("details__transmission")}
+              </label>
+              <select
+                id="transmission-select"
+                className="form-select"
+                onChange={handleTransmissionChange}
+              >
+                <option value="">{t("details__transmission")}</option>
+                {transmissions.map((transmission, i) => (
+                  <option key={transmission} value={transmission}>
+                    {i18n.language === 'ar' ? transmissionsAr[i] : transmission}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
         </div>
         <div className="row mt-5 d-flex justify-content-center">
-          {sellingCars.length !== 0 ? (
-            sellingCars.map((car) => (
+          {sellingCars.filter((car) => !car.is_sold).length !== 0 ? (
+            sellingCars.filter((car) => !car.is_sold).map((car) => (
               <div className="col-3 mb-3" key={car.id}>
                 <div className="card shadow-lg rounded position-relative">
-                  {car.is_sold && (
-                    <div
-                      className="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-center"
-                      style={{
-                        backgroundColor: "rgba(0, 0, 0, 0.7)",
-                        zIndex: 1,
-                      }}
-                    >
-                      <span className="text-white fs-4">
-                        {t("buy__list-sold")}
-                      </span>
-                    </div>
-                  )}
                   <span className="rental__card-price bg-primary text-white">
                     {car.selling_price}$
                   </span>

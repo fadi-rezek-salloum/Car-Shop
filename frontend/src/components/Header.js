@@ -69,7 +69,19 @@ const Header = (props) => {
               </Link>
             </li>
 
-            <li className="nav-item">
+            <li className="nav-item mx-5">
+              <Link
+                to="/cart"
+                className="nav-link text-primary position-relative"
+              >
+                {t("header__cart")}
+                <span className="position-absolute top-25 start-100 ms-1 translate-middle badge rounded-pill bg-danger">
+                  {countCartItems}
+                </span>
+              </Link>
+            </li>
+
+            <li className="nav-item px-5">
               {i18n.language === "en" && (
                 <button
                   onClick={() => {
@@ -90,18 +102,6 @@ const Header = (props) => {
                   En
                 </button>
               )}
-            </li>
-
-            <li className="nav-item">
-              <Link
-                to="/cart"
-                className="nav-link text-primary position-relative"
-              >
-                {t("header__cart")}
-                <span className="position-absolute top-25 start-100 ms-1 translate-middle badge rounded-pill bg-danger">
-                  {countCartItems}
-                </span>
-              </Link>
             </li>
           </ul>
 

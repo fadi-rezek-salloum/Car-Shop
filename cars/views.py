@@ -1,7 +1,7 @@
 import os
 import pandas as pd
 
-from django.db.models import Max
+from django.db.models import Max, Min
 from django.conf import settings
 from django.http import JsonResponse
 from rest_framework import generics
@@ -20,13 +20,24 @@ def get_all_colors(request):
     return JsonResponse({'colors': list(values), 'colors_ar': list(values_ar)})
 
 
+def get_all_names(request):
+    values = Car.objects.values_list('name', flat=True).distinct()
+    values_ar = Car.objects.values_list('name_ar', flat=True).distinct()
+    return JsonResponse({'names': list(values), 'names_ar': list(values_ar)})
+
+
 def get_max_price(request):
     max_price = Car.objects.aggregate(max_price=Max('selling_price'))['max_price']
     return JsonResponse({'max_price': max_price})
 
 
-def predict_selling_price(request, id):
-    car = Car.objects.filter(id=id, for_sale=True)
+def get_min_price(request):
+    min_price = Car.objects.aggregate(min_price=Min('selling_price'))['min_price']
+    return JsonResponse({'min_price': min_price})
+
+
+def predict_selling_price(request, name):
+    car = Car.objects.filter(name__icontains=name, for_sale=True)
 
     car_dict = car.values('name', 'year', 'selling_price', 'km_driven', 'fuel', 'seller_type', 'transmission', 'owner', 'mileage', 'engine', 'max_power', 'seats')[0]
     car_dict['selling_price'] = int(car_dict['selling_price'])
@@ -68,8 +79,8 @@ class SellCarsList(generics.ListAPIView):
     
     def get_queryset(self):
         try:
-            if self.request.GET['color'] or self.request.GET['max_price']:
-                cars = Car.objects.filter(for_sale=True, color__icontains=self.request.GET['color'], selling_price__gte=self.request.GET['max_price']).order_by('-created')
+            if self.request.GET['color'] or self.request.GET['max_price'] or self.request.GET['name'] or self.request.GET['transmission']:
+                cars = Car.objects.filter(for_sale=True, color__icontains=self.request.GET['color'], name__icontains=self.request.GET['name'], transmission__icontains=self.request.GET['transmission'], selling_price__gte=int(self.request.GET['max_price'])).order_by('-created')
         except:
             cars = Car.objects.filter(for_sale=True).order_by('-created')
 

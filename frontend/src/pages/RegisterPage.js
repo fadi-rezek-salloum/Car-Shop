@@ -137,7 +137,7 @@ const RegisterPage = () => {
           type="text"
           name="first_name"
           id="fist_name"
-          placeholder='{t("register__fname")}...'
+          placeholder={t("register__fname")}
           className="form-control"
           onChange={(e) => setFirstName(e.target.value)}
           value={firstName}
@@ -153,7 +153,7 @@ const RegisterPage = () => {
           type="text"
           name="middle_name"
           id="middle_name"
-          placeholder='{t("register__fname")}...'
+          placeholder={t("register__fname")}
           className="form-control"
           onChange={(e) => setMiddleName(e.target.value)}
           value={middleName}
@@ -168,7 +168,7 @@ const RegisterPage = () => {
           type="text"
           name="last_name"
           id="last_name"
-          placeholder='{t("register__fname")}...'
+          placeholder={t("register__fname")}
           className="form-control"
           onChange={(e) => setLastName(e.target.value)}
           value={lastName}
@@ -184,7 +184,7 @@ const RegisterPage = () => {
           type="email"
           name="email"
           id="email"
-          placeholder='{t("register__fname")}...'
+          placeholder={t("register__fname")}
           className={
             validEmail
               ? "form-control form__input-valid"
@@ -207,7 +207,7 @@ const RegisterPage = () => {
           type="text"
           name="phone"
           id="phone"
-          placeholder='{t("register__phone")}...'
+          placeholder={t("register__phone")}
           className="form-control"
           onChange={(e) => setPhone(e.target.value)}
           value={phone}
@@ -223,7 +223,7 @@ const RegisterPage = () => {
           type="text"
           name="address"
           id="address"
-          placeholder='{t("register__fname")}...'
+          placeholder={t("register__fname")}
           className="form-control"
           onChange={(e) => setAddress(e.target.value)}
           value={address}
@@ -239,7 +239,7 @@ const RegisterPage = () => {
           type="password"
           name="password"
           id="password"
-          placeholder='{t("register__pass1")}...'
+          placeholder={t("register__pass1")}
           className={
             validPwd
               ? "form-control form__input-valid"
@@ -279,7 +279,7 @@ const RegisterPage = () => {
           name="confirm_pwd"
           id="confirm_pwd"
           aria-describedby="confirmnote"
-          placeholder='{t("register__fname")}...'
+          placeholder={t("register__fname")}
           className={
             validMatch
               ? "form-control form__input-valid"

@@ -4,6 +4,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  direction: ltr;
 
   font-family: 'Ubuntu', sans-serif;
 }
@@ -167,5 +168,5 @@ body::-webkit-scrollbar-thumb {
   font-size: 12px;
   line-height: 1.4;
   white-space: nowrap;
-  z-index: 1;
+  z-index: 10000000 !important;
 }

@@ -117,7 +117,7 @@ const HomePage = (props) => {
 
   return (
     <main>
-      {relatedParts && (
+      {relatedParts.length !==0 && (
         <div
           className="modal fade show"
           style={{
@@ -354,7 +354,7 @@ const HomePage = (props) => {
           <h2 className="text-center">{t("home__rs")}</h2>
           <div className="row mt-5 d-flex justify-content-center">
             {rentalCars.length !== 0 ? (
-              rentalCars.map((car) => (
+              rentalCars.slice(0,6).map((car) => (
                 <div className="col-3 mb-3" key={car.id}>
                   <div className="card shadow-lg rounded position-relative">
                     {is_rented_now(car.rental_days[0], car.rental_days[1]) && (
@@ -409,8 +409,8 @@ const HomePage = (props) => {
         <div className="container">
           <h2 className="text-center">{t("home__ss")}</h2>
           <div className="row mt-5 d-flex justify-content-center">
-            {sellingCars.length !== 0 ? (
-              sellingCars.map((car) => (
+            {sellingCars.filter((car) => !car.is_sold).length !== 0 ? (
+              sellingCars.filter((car) => !car.is_sold).slice(0,6).map((car) => (
                 <div className="col-3 mb-3" key={car.id}>
                   <div className="card shadow-lg rounded position-relative">
                     {car.is_sold && (
@@ -465,7 +465,7 @@ const HomePage = (props) => {
           <h2 className="text-center">{t("home__part")}</h2>
           <div className="row mt-5 d-flex justify-content-center">
             {parts.length !== 0 ? (
-              parts.map((part) => (
+              parts.slice(0,6).map((part) => (
                 <div className="col-4 mb-3" key={part.id}>
                   <div className="card shadow-lg rounded">
                     <span className="rental__card-price bg-primary text-white">
@@ -503,42 +503,6 @@ const HomePage = (props) => {
             ) : (
               <div className="col-12 text-center">{t("buy__part-empty")}</div>
             )}
-          </div>
-        </div>
-      </section>
-
-      <section className="mt-5" id="grey">
-        <div className="container py-5">
-          <div className="row">
-            <div className="col-4">
-              <div className="card rounded shadow-lg py-4">
-                <img src={m1} alt="M1" className="members__img" />
-                <div className="card-body text-center">
-                  <div className="card-title h2">John Doe</div>
-                  <div className="card-text">{t("home__p1")}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-4">
-              <div className="card rounded shadow-lg py-4">
-                <img src={m2} alt="M2" className="members__img" />
-                <div className="card-body text-center">
-                  <div className="card-title h2">Jane Doe</div>
-                  <div className="card-text">{t("home__p2")}</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-4">
-              <div className="card rounded shadow-lg py-4">
-                <img src={m3} alt="M3" className="members__img" />
-                <div className="card-body text-center">
-                  <div className="card-title h2">Carolina Smith</div>
-                  <div className="card-text">{t("home__p3")}</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

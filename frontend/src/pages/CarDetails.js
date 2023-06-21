@@ -23,19 +23,19 @@ const CarDetails = () => {
   let loc = useLocation();
   const { car } = loc.state;
 
-  const getPredictedSellingPrice = async () => {
-    let response = await axios.get(`http://localhost:8000/api/cars/predict-selling-price/${car.id}/`)
+  // const getPredictedSellingPrice = async () => {
+  //   let response = await axios.get(`http://localhost:8000/api/cars/predict-selling-price/${car.id}/`)
 
-    if ( response.status === 200 ) {
-      document.getElementById("predictedPrice").textContent = parseFloat(response.data.result) + '$';
-    }
-  }
+  //   if ( response.status === 200 ) {
+  //     document.getElementById("predictedPrice").textContent = parseFloat(response.data.result) + '$';
+  //   }
+  // }
 
-  useEffect(() => {
-    if ( car.for_sale ) {
-      getPredictedSellingPrice()
-    }
-  })
+  // useEffect(() => {
+  //   if ( car.for_sale ) {
+  //     getPredictedSellingPrice()
+  //   }
+  // })
 
   const TRANS_MAPPING = {
     'M': 'Manual',
@@ -177,12 +177,12 @@ const CarDetails = () => {
                   <FontAwesomeIcon icon={faDollar} className="me-2" />
                   {t("details__selling")}
                   <span className="text-muted ms-2">{car.selling_price}</span>
-                  {car.for_sale &&
+                  {/* {car.for_sale &&
                   <div className="alert bg-primary text-white mt-3 d-flex justify-content-between">
                     {i18n.language === 'ar' ? <div>السعر المتوقع:</div> : <div>Predicted Price</div>}
                     <div id="predictedPrice"></div>
                     </div>
-                  }
+                  } */}
                 </div>
               )}
             </h3>

@@ -67,7 +67,7 @@ const Checkout = (props) => {
             name="notes"
             id="notes"
             className="form-control"
-            placeholder='{t("checkout__notes")}...'
+            placeholder={t("checkout__notes")}
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
           />
@@ -80,7 +80,7 @@ const Checkout = (props) => {
               name="notes_ar"
               id="notes_ar"
               className="form-control"
-              placeholder="Notes Arabic..."
+              placeholder={t("checkout__notes")}
               value={notesAr}
               onChange={(e) => setNotesAr(e.target.value)}
             />

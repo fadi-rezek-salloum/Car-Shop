@@ -20,8 +20,8 @@ const FindCar = () => {
 
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const [lng, setLng] = useState(-3.4360);
-  const [lat, setLat] = useState(55.8514);
+  const [lng, setLng] = useState(37.9968);
+  const [lat, setLat] = useState(34.8021);
   const [zoom, setZoom] = useState(10);
 
   const navigate = useNavigate();
@@ -72,6 +72,7 @@ const FindCar = () => {
         const title = document.createElement("h4");
         title.textContent = car.name;
         title.style.marginTop = "25px"
+        title.style.textAlign = 'center'
         tooltip.appendChild(title);
 
         const link = document.createElement("a");
