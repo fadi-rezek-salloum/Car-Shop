@@ -102,5 +102,9 @@
     "alert__related-empty": "We can't recommend any part right now!",
     "buy__list-title": "Buy Car",
     "register__title": "Register",
-    "predict": "Predict"
+    "predict": "Predict",
+    "predict__year": "Year",
+    "seller_type": "Seller Type",
+    "owner": "Owner",
+    "mileage": "Mileage"
 }

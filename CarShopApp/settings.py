@@ -33,9 +33,9 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -142,6 +142,9 @@ SIMPLE_JWT = {
 
 CORS_ORIGIN_ALLOW_ALL=True
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
 STRIPE_PUBLIC_KEY = 'pk_test_51NJeJfDgiV2TrUeesVpWN2B9bJo3KAkmBjM9Q6gx9shn9Z7a85eVayUCPAPxLmeczm0Geve7lDv5rg7K5IK175RG00eJPmJ0gp'
 STRIPE_SECRET_KEY = 'sk_test_51NJeJfDgiV2TrUeeN8DhOLHeJOsrQW5FfQDMAJqyTEsTVaMH0ahjfOkexLvZesh8RHOBC8lSpElHogW9DCPoa4RT00XROh2s7u'

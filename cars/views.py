@@ -4,6 +4,8 @@ import pandas as pd
 from django.db.models import Max, Min
 from django.conf import settings
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
@@ -36,21 +38,44 @@ def get_min_price(request):
     return JsonResponse({'min_price': min_price})
 
 
-def predict_selling_price(request, name):
-    car = Car.objects.filter(name__icontains=name, for_sale=True)
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny,])
+def predict_selling_price(request):
+    data = request.data
 
-    car_dict = car.values('name', 'year', 'selling_price', 'km_driven', 'fuel', 'seller_type', 'transmission', 'owner', 'mileage', 'engine', 'max_power', 'seats')[0]
-    car_dict['selling_price'] = int(car_dict['selling_price'])
-    if car_dict['transmission'] == 'M':
-        car_dict['transmission'] = 'Manual'
-    else:
-        car_dict['transmission'] = 'Automatic'
+    name = data.get('name')
+    year = int(data.get('year'))
+    selling_price = 0
+    km_driven = int(data.get('km_driven'))
+    fuel = data.get('fuel')
+    seller_type = data.get('seller_type')
+    transmission = data.get('transmission')
+    owner = data.get('owner')
+    mileage = data.get('mileage')
+    engine = data.get('engine')
+    max_power = data.get('max_power')
+    seats = int(data.get('seats'))
+
+    car_dict = {
+        'name': name,
+        'year': year,
+        'selling_price': selling_price,
+        'km_driven': km_driven,
+        'fuel': fuel,
+        'seller_type': seller_type,
+        'transmission': transmission,
+        'owner': owner,
+        'mileage': mileage,
+        'engine': engine,
+        'max_power': max_power,
+        'seats': seats,
+        'torque': ''
+    }
 
     new_dict = {}
     for key, value in car_dict.items():
         new_dict[key] = [value]
-
-    new_dict['torque'] = ['']
 
     new = pd.DataFrame.from_dict(new_dict)
 
